@@ -20,6 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Get current timestamp
+        const now = new Date();
+        const timestamp = now.toLocaleDateString(undefined, { 
+            month: 'short', 
+            day: 'numeric' 
+        }) + ' at ' + now.toLocaleTimeString(undefined, { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+
         // Create idea element
         const ideaCard = document.createElement('div');
         ideaCard.className = 'idea-card';
@@ -31,8 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="idea-text">${escapeHtml(ideaText)}</p>
             <div class="idea-meta">
                 <div class="avatar">${initial}</div>
-                <div class="suggested-by">
-                    Suggested by <span class="user-name">${selectedPerson}</span>
+                <div class="meta-content">
+                    <div class="suggested-by">
+                        Suggested by <span class="user-name">${selectedPerson}</span>
+                    </div>
+                    <div class="timestamp">${timestamp}</div>
                 </div>
             </div>
         `;

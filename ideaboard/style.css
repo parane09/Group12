@@ -163,9 +163,15 @@ select:focus {
 .idea-meta {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 1rem;
     border-top: 1px solid var(--glass-border);
     padding-top: 1rem;
+}
+
+.meta-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
 
 .avatar {
@@ -182,7 +188,14 @@ select:focus {
 
 .suggested-by {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+}
+
+.timestamp {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+    font-weight: 400;
 }
 
 .user-name {
