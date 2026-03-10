@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Idea Board | Collaborate & Innovate</title>
+    <meta name="description"
+        content="A premium group idea board for teams to collaborate and share innovative thoughts.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Group Idea Board</h1>
+            <p class="subtitle">Capture your spark. Share your vision.</p>
+        </header>
+
+        <main>
+            <section class="input-card">
+                <div class="input-group">
+                    <label for="ideaInput">Spark an Idea</label>
+                    <input type="text" id="ideaInput" placeholder="Enter your brilliant idea here..."
+                        autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label for="personSelect">Suggested By</label>
+                    <select id="personSelect">
+                        <option value="" disabled selected>Select your name</option>
+                        <option value="Binu">Binu</option>
+                        <option value="Parami">Parami</option>
+                        <option value="Dulina">Dulina</option>
+                        <option value="Kishan">Kishan</option>
+                        <option value="Rawana">Rawana</option>
+                        <option value="Oshada">Oshada</option>
+                        <option value="Sithupa">Sithupa</option>
+                        <option value="Kalindu">Kalindu</option>
+                        <option value="Shainy">Shainy</option>
+                        <option value="Minoshi">Minoshi</option>
+                    </select>
+                </div>
+
+                <button id="addIdeaBtn" class="primary-btn">Add to Board</button>
+            </section>
+
+            <section class="board-section">
+                <h2>The Board</h2>
+                <div id="ideaList" class="idea-grid">
+                    <!-- Ideas will appear here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+
+</html>
