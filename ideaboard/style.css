@@ -1,10 +1,10 @@
 :root {
-    --primary-color: #6366f1;
-    --primary-hover: #4f46e5;
-    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --primary-color: #c72201;
+    --primary-hover: #ffcc00;
+    --bg-gradient: linear-gradient(135deg, #ffffff 0%, #b3a400 100%);
     --card-bg: rgba(30, 41, 59, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --text-primary: #f8fafc;
+    --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --accent-glow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
@@ -39,7 +39,7 @@ header {
 h1 {
     font-size: 3.5rem;
     font-weight: 700;
-    background: linear-gradient(to right, #818cf8, #c084fc);
+    background: linear-gradient(to right, #c72201, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
