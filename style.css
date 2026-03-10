@@ -1,0 +1,299 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f4ef;
+    color: #222;
+    transition: 0.3s;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #6d0019;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    flex-wrap: wrap;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-placeholder {
+    width: 50px;
+    height: 50px;
+    background-color: #d4af37;
+    color: #6d0019;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.logo-section h1 {
+    font-size: 22px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+/* Dark mode toggle */
+.dark-mode-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark-text {
+    font-size: 14px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 22px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 22px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.3s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background-color: #d4af37;
+}
+
+input:checked + .slider:before {
+    transform: translateX(23px);
+}
+
+/* Layout */
+.container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+    color: #6d0019;
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    background-color: #f2e6c9;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar li:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+    color: #6d0019;
+    margin-bottom: 20px;
+}
+
+.subject-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.subject-row input,
+.subject-row select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+button {
+    background-color: #6d0019;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #d4af37;
+    color: #222;
+}
+
+#gpaResult {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Timer */
+.timer-display {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #6d0019;
+}
+
+.timer-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.timer-note {
+    margin-top: 15px;
+}
+
+/* Fade in animation */
+.fade-in {
+    animation: fadeIn 1.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+body.dark-mode .sidebar,
+body.dark-mode .card {
+    background-color: #2c2c2c;
+    color: #f5f5f5;
+}
+
+body.dark-mode .sidebar h2,
+body.dark-mode .card h2,
+body.dark-mode .timer-display {
+    color: #ffd700;
+}
+
+body.dark-mode .sidebar li {
+    background-color: #444;
+    color: #fff;
+}
+
+body.dark-mode input,
+body.dark-mode select {
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid #666;
+}
+
+body.dark-mode button {
+    background-color: #d4af37;
+    color: black;
+}
+
+body.dark-mode button:hover {
+    background-color: #6d0019;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .subject-row {
+        flex-direction: column;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

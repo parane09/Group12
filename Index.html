@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Toolkit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-section">
+            <div class="logo-placeholder"><img src="download.png" width="50" height="50"></div>
+            <h1>Student Toolkit</h1>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#gpa-section">GPA Calculator</a>
+            <a href="#timer-section">Study Timer</a>
+        </nav>
+
+        <div class="dark-mode-box">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="dark-text">Dark Mode</span>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar fade-in">
+            <h2>Upcoming Events</h2>
+            <ul>
+                <li>Assignment Submission - Monday</li>
+                <li>Database Quiz - Wednesday</li>
+                <li>Group Meeting - Thursday</li>
+                <li>Presentation Practice - Friday</li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- GPA Calculator -->
+            <section id="gpa-section" class="card fade-in">
+                <h2>GPA Calculator</h2>
+
+                <div class="subject-row">
+                    <input type="number" id="credit1" placeholder="Subject 1 Credits">
+                    <select id="grade1">
+                        <option value="">Select Grade</option>
+                        <option value="4.0">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3.0">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2.0">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.0">D</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </div>
+
+                <div class="subject-row">
+                    <input type="number" id="credit2" placeholder="Subject 2 Credits">
+                    <select id="grade2">
+                        <option value="">Select Grade</option>
+                        <option value="4.0">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3.0">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2.0">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.0">D</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </div>
+
+                <div class="subject-row">
+                    <input type="number" id="credit3" placeholder="Subject 3 Credits">
+                    <select id="grade3">
+                        <option value="">Select Grade</option>
+                        <option value="4.0">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
+                        <option value="3.0">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
+                        <option value="2.0">C</option>
+                        <option value="1.7">C-</option>
+                        <option value="1.0">D</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </div>
+
+                <button onclick="calculateGPA()">Calculate GPA</button>
+                <p id="gpaResult">Your GPA will appear here.</p>
+            </section>
+
+            <!-- Study Timer -->
+            <section id="timer-section" class="card fade-in">
+                <h2>Pomodoro Study Timer</h2>
+                <div class="timer-display" id="timer">25:00</div>
+
+                <div class="timer-buttons">
+                    <button onclick="startTimer()">Start</button>
+                    <button onclick="resetTimer()">Reset</button>
+                </div>
+
+                <p class="timer-note">Study for 25 minutes and stay focused.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
