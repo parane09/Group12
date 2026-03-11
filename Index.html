@@ -1,123 +1,56 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Toolkit</title>
+    <title>UCSC Hub | Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <header class="navbar">
-        <div class="logo-section">
-            <div class="logo-placeholder"><img src="download.png" width="50" height="50"></div>
-            <h1>Student Toolkit</h1>
+    <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <img src="download.png" alt="UCSC Logo" style="width:35px; height:35px; border-radius:50%; object-fit: contain; background: white;">
+            <span style="font-weight:800; font-size:1.2rem;">UCSC Hub</span>
         </div>
-
-        <nav class="nav-links">
-            <a href="#gpa-section">GPA Calculator</a>
-            <a href="#timer-section">Study Timer</a>
-        </nav>
-
-        <div class="dark-mode-box">
-            <label class="switch">
-                <input type="checkbox" id="darkModeToggle">
-                <span class="slider"></span>
-            </label>
-            <span class="dark-text">Dark Mode</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gpa.html">GPA Calc</a>
+            <a href="timer.html">Timer</a>
+            <a href="ideas.html">Ideas</a> <label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label>
         </div>
-    </header>
+    </nav>
 
-    <!-- Main Layout -->
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar fade-in">
-            <h2>Upcoming Events</h2>
-            <ul>
-                <li>Assignment Submission - Monday</li>
-                <li>Database Quiz - Wednesday</li>
-                <li>Group Meeting - Thursday</li>
-                <li>Presentation Practice - Friday</li>
-            </ul>
+    <div class="app-grid">
+        <aside class="sidebar">
+            <h3>Upcoming Events</h3>
+            <div id="event-list">
+                <div class="event-item">Programming Assignment 01</div>
+            </div>
+            <input type="text" id="ev-input" class="input-modern" placeholder="Add event...">
+            <button class="btn-primary" onclick="addEvent()" style="width:100%">+ Add</button>
         </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- GPA Calculator -->
-            <section id="gpa-section" class="card fade-in">
-                <h2>GPA Calculator</h2>
-
-                <div class="subject-row">
-                    <input type="number" id="credit1" placeholder="Subject 1 Credits">
-                    <select id="grade1">
-                        <option value="">Select Grade</option>
-                        <option value="4.0">A</option>
-                        <option value="3.7">A-</option>
-                        <option value="3.3">B+</option>
-                        <option value="3.0">B</option>
-                        <option value="2.7">B-</option>
-                        <option value="2.3">C+</option>
-                        <option value="2.0">C</option>
-                        <option value="1.7">C-</option>
-                        <option value="1.0">D</option>
-                        <option value="0.0">F</option>
-                    </select>
+        <main>
+            <div class="glass-card fade-in">
+                <h2>🚀 Quick Access</h2>
+                <p style="margin-bottom:25px; opacity:0.8;">Select a tool to get started with your studies.</p>
+                
+                <div class="quick-paths">
+                    <a href="gpa.html" class="path-card">
+                        <span class="path-icon">📊</span>
+                        <span class="path-label">GPA Calculator</span>
+                    </a>
+                    <a href="timer.html" class="path-card">
+                        <span class="path-icon">⏱️</span>
+                        <span class="path-label">Focus Timer</span>
+                    </a>
+                    <a href="ideas.html" class="path-card"> <span class="path-icon">💡</span>
+                        <span class="path-label">Project Ideas</span>
+                    </a>
                 </div>
-
-                <div class="subject-row">
-                    <input type="number" id="credit2" placeholder="Subject 2 Credits">
-                    <select id="grade2">
-                        <option value="">Select Grade</option>
-                        <option value="4.0">A</option>
-                        <option value="3.7">A-</option>
-                        <option value="3.3">B+</option>
-                        <option value="3.0">B</option>
-                        <option value="2.7">B-</option>
-                        <option value="2.3">C+</option>
-                        <option value="2.0">C</option>
-                        <option value="1.7">C-</option>
-                        <option value="1.0">D</option>
-                        <option value="0.0">F</option>
-                    </select>
-                </div>
-
-                <div class="subject-row">
-                    <input type="number" id="credit3" placeholder="Subject 3 Credits">
-                    <select id="grade3">
-                        <option value="">Select Grade</option>
-                        <option value="4.0">A</option>
-                        <option value="3.7">A-</option>
-                        <option value="3.3">B+</option>
-                        <option value="3.0">B</option>
-                        <option value="2.7">B-</option>
-                        <option value="2.3">C+</option>
-                        <option value="2.0">C</option>
-                        <option value="1.7">C-</option>
-                        <option value="1.0">D</option>
-                        <option value="0.0">F</option>
-                    </select>
-                </div>
-
-                <button onclick="calculateGPA()">Calculate GPA</button>
-                <p id="gpaResult">Your GPA will appear here.</p>
-            </section>
-
-            <!-- Study Timer -->
-            <section id="timer-section" class="card fade-in">
-                <h2>Pomodoro Study Timer</h2>
-                <div class="timer-display" id="timer">25:00</div>
-
-                <div class="timer-buttons">
-                    <button onclick="startTimer()">Start</button>
-                    <button onclick="resetTimer()">Reset</button>
-                </div>
-
-                <p class="timer-note">Study for 25 minutes and stay focused.</p>
-            </section>
+            </div>
         </main>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPA Calculator | UCSC Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:30px; height:30px; background:var(--gold); border-radius:50%;"></div><span style="font-weight:800;">UCSC Hub</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gpa.html">GPA Calc</a>
+            <a href="timer.html">Timer</a>
+            <a href="ideas.html">Ideas</a>
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </nav>
+
+    <div class="app-grid">
+        <aside class="sidebar">
+            <h3>Upcoming Events</h3>
+            <div id="event-list"><div class="event-item">Result Analysis</div></div>
+        </aside>
+
+        <main>
+            <div class="glass-card">
+                <h2>🎓 GPA Calculator</h2>
+                <div id="gpa-container">
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="number" class="credits input-modern" placeholder="Credits">
+                        <input type="number" class="grades input-modern" placeholder="Grade (0-4)">
+                    </div>
+                </div>
+                <button class="btn-outline" onclick="addRow()">+ Add Course</button>
+                <button class="btn-primary" onclick="calcGPA()">Calculate</button>
+                <div style="text-align:center; margin-top:20px;">
+                    <span style="font-size:0.9rem; opacity:0.7;">Calculated GPA</span>
+                    <h1 id="gpa-res" style="color:var(--maroon); font-size:3.5rem;">0.00</h1>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
