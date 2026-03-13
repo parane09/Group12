@@ -101,8 +101,8 @@ img { max-width: 100%; }
 .hero {
   position: relative;
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  overflow: visible;
 }
 
 .hero-bg {
@@ -128,7 +128,7 @@ img { max-width: 100%; }
 .hero-content {
   position: relative; z-index: 2;
   text-align: center;
-  padding: 2rem;
+  padding: 5rem 2rem 3rem;
 }
 
 .hero-eyebrow {
@@ -172,12 +172,15 @@ img { max-width: 100%; }
 }
 
 .hero-scroll-hint {
-  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: 0.5rem; left: 50%; transform: translateX(-50%);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 3px;
-  color: var(--text-muted);
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--primary);
+  text-shadow: 0 0 16px rgba(255,107,0,0.6);
   animation: bounce 2s infinite;
+  white-space: nowrap;
 }
 
 @keyframes bounce {
