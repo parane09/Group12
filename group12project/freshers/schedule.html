@@ -121,50 +121,19 @@
 <script src="data.js"></script>
 <script src="main.js"></script>
 <script>
-  const FULL_SCHEDULE = [
-    // Day 1 — Aug 5
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🎉 Opening Ceremony', teamA: 'All Athletes', teamB: 'UCSC Faculty', time: '8:30 AM', venue: 'Main Grounds', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏃 Athletics', teamA: 'UCSC', teamB: 'Faculty of Science', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏊 Swimming', teamA: 'Faculty of Medicine', teamB: 'Faculty of Management', time: '1:00 PM', venue: 'BMICH Pool', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '♟️ Chess', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', time: '9:00 AM', venue: 'Seminar Room A', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🎯 Carrom', teamA: 'Sri Palee Campus', teamB: 'Faculty of Technology', time: '2:00 PM', venue: 'Common Room', status: 'upcoming' },
+  // Use MATCHES from data.js — 10 matches per day (Aug 6–11)
+  const DAY_LABELS = {
+    'Aug 6':  'Aug 6 — Day 1',
+    'Aug 7':  'Aug 7 — Day 2',
+    'Aug 8':  'Aug 8 — Day 3',
+    'Aug 9':  'Aug 9 — Day 4',
+    'Aug 10': 'Aug 10 — Day 5',
+    'Aug 11': 'Aug 11 — Day 6',
+  };
 
-    // Day 2 — Aug 6
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏏 Cricket', teamA: 'UCSC', teamB: 'Faculty of Science', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '⚽ Football', teamA: 'Faculty of Medicine', teamB: 'Faculty of Arts', time: '2:00 PM', venue: 'Football Field', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏐 Volleyball', teamA: 'Faculty of Management', teamB: 'Faculty of Law', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🥅 Netball', teamA: 'Sri Palee Campus', teamB: 'Faculty of Technology', time: '11:30 AM', venue: 'Netball Court', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🤾 Handball', teamA: 'UCSC', teamB: 'Faculty of Management', time: '3:30 PM', venue: 'Sports Hall', status: 'upcoming' },
-
-    // Day 3 — Aug 7
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏸 Badminton', teamA: 'Faculty of Science', teamB: 'Faculty of Arts', time: '9:00 AM', venue: 'Sports Hall', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏓 Table Tennis', teamA: 'Faculty of Law', teamB: 'Faculty of Technology', time: '11:00 AM', venue: 'TT Hall', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🎾 Tennis', teamA: 'UCSC', teamB: 'Faculty of Medicine', time: '2:00 PM', venue: 'Tennis Courts', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏀 Basketball', teamA: 'Faculty of Management', teamB: 'Sri Palee Campus', time: '4:00 PM', venue: 'Basketball Court', status: 'upcoming' },
-
-    // Day 4 — Aug 8
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🏉 Rugby', teamA: 'UCSC', teamB: 'Faculty of Science', time: '9:00 AM', venue: 'Rugby Ground', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🤼 Kabaddi', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', time: '11:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '💪 Tug of War', teamA: 'Faculty of Medicine', teamB: 'Faculty of Technology', time: '2:00 PM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🥇 Shot Put', teamA: 'Faculty of Management', teamB: 'Sri Palee Campus', time: '4:00 PM', venue: 'Track Field', status: 'upcoming' },
-
-    // Day 5 — Aug 9
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏏 Cricket', teamA: 'UCSC', teamB: 'Faculty of Medicine', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏃 Athletics', teamA: 'Faculty of Arts', teamB: 'Sri Palee Campus', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🚴 Cycling', teamA: 'Faculty of Science', teamB: 'Faculty of Technology', time: '7:00 AM', venue: 'Campus Road', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏅 Long Distance', teamA: 'Faculty of Management', teamB: 'Faculty of Law', time: '6:30 AM', venue: 'Campus Track', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🎮 E-Sports', teamA: 'UCSC', teamB: 'Faculty of Science', time: '2:00 PM', venue: 'Computer Lab 3', status: 'upcoming' },
-
-    // Day 6 — Aug 10 — Grand Finals
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '⚽ Football', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '3:00 PM', venue: 'Football Field', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏐 Volleyball', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏸 Badminton', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '1:00 PM', venue: 'Sports Hall', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🎉 Closing Ceremony', teamA: 'Prize Giving', teamB: 'All Faculties', time: '6:00 PM', venue: 'Main Grounds', status: 'upcoming' },
-  ];
-
-  // Get unique days and sports
-  const days = [...new Set(FULL_SCHEDULE.map(m => m.day))];
-  const sports = [...new Set(FULL_SCHEDULE.map(m => m.sport))].sort();
+  // Get unique days and sports from the shared MATCHES array
+  const days = [...new Set(MATCHES.map(m => m.date))];
+  const sports = [...new Set(MATCHES.map(m => m.sport))].sort();
   let activeDay = days[0];
 
   // Populate sport filter dropdown
@@ -193,12 +162,12 @@
 
   function renderSchedule() {
     const selectedSport = document.getElementById('sportFilter').value;
-    let matches = FULL_SCHEDULE.filter(m => m.day === activeDay);
+    let matches = MATCHES.filter(m => m.date === activeDay);
     if (selectedSport !== 'all') {
       matches = matches.filter(m => m.sport === selectedSport);
     }
 
-    const dayLabel = FULL_SCHEDULE.find(m => m.day === activeDay)?.dayLabel || activeDay;
+    const dayLabel = DAY_LABELS[activeDay] || activeDay;
 
     if (matches.length === 0) {
       document.getElementById('scheduleContent').innerHTML = `
@@ -213,6 +182,7 @@
     document.getElementById('scheduleContent').innerHTML = `
       <div style="margin-bottom:1.5rem;">
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--primary)">${dayLabel}</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;color:var(--text-muted);letter-spacing:1px;">${matches.length} MATCHES SCHEDULED</p>
       </div>
       <div class="schedule-table-wrap">
         <table class="schedule-table">
@@ -236,7 +206,7 @@
                   <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${m.teamB}</span>
                 </td>
                 <td style="color:var(--text-muted);font-family:'Barlow Condensed',sans-serif">${m.venue}</td>
-                <td><span class="status-badge status-${m.status}">${m.status.toUpperCase()}</span></td>
+                <td><span class="status-badge status-upcoming">UPCOMING</span></td>
               </tr>
             `).join('')}
           </tbody>
