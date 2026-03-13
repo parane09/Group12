@@ -6,6 +6,25 @@
   <title>Sports — Freshers' 2025 UCSC</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    .gender-tab {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .gender-tab:hover { border-color: var(--primary); color: var(--text); }
+    .gender-tab.active { background: var(--grad); border-color: transparent; color: #fff; }
+    .gender-tab.boys.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .gender-tab.girls.active { background: linear-gradient(135deg, #ec4899, #be185d); }
+  </style>
 </head>
 <body>
 
@@ -30,14 +49,14 @@
   <p>Select a sport to register, view registered players, and join the WhatsApp group.</p>
 </div>
 
-<!-- SPORT DETAIL PANEL (shown when sport selected) -->
+<!-- SPORT DETAIL PANEL -->
 <div id="sportDetail" style="display:none;">
   <div class="sport-detail-hero">
     <span class="sport-detail-icon" id="detailIcon"></span>
     <h1 id="detailName"></h1>
     <p id="detailDesc"></p>
     <a id="detailWhatsapp" href="#" target="_blank" class="whatsapp-btn">
-      💬 Join WhatsApp Group
+      &#128172; Join WhatsApp Group
     </a>
   </div>
 
@@ -70,12 +89,23 @@
           <label>Year / Batch *</label>
           <select id="regYear">
             <option value="">Select Batch</option>
-            <option>1st Year — Batch 2024/25</option>
-            <option>2nd Year — Batch 2023/24</option>
-            <option>3rd Year — Batch 2022/23</option>
-            <option>4th Year — Batch 2021/22</option>
+            <option>1st Year - Batch 2024/25</option>
+            <option>2nd Year - Batch 2023/24</option>
+            <option>3rd Year - Batch 2022/23</option>
+            <option>4th Year - Batch 2021/22</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Gender *</label>
+          <select id="regGender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
         <div class="form-group">
           <label>Department</label>
           <select id="regDept">
@@ -83,7 +113,7 @@
             <option>Computer Science</option>
             <option>Information Technology</option>
             <option>Information Systems</option>
-            <option>Statistics & OR</option>
+            <option>Statistics and OR</option>
           </select>
         </div>
       </div>
@@ -95,8 +125,13 @@
 
     <!-- Registered Players -->
     <div class="players-table-wrap">
-      <div class="players-table-header">
-        Registered Players — <span id="playerCount">0</span> registered
+      <div class="players-table-header" style="flex-wrap:wrap;gap:0.75rem;">
+        <span>Registered Players - <span id="playerCount">0</span> registered</span>
+        <div style="display:flex;gap:0.5rem;">
+          <button class="gender-tab active" onclick="setGenderFilter('all', this)">All</button>
+          <button class="gender-tab boys" onclick="setGenderFilter('Male', this)">Boys</button>
+          <button class="gender-tab girls" onclick="setGenderFilter('Female', this)">Girls</button>
+        </div>
       </div>
       <table class="players-table">
         <thead>
@@ -104,19 +139,20 @@
             <th>#</th>
             <th>Name</th>
             <th>Student ID</th>
+            <th>Gender</th>
             <th>Year / Batch</th>
             <th>Department</th>
             <th>Contact</th>
           </tr>
         </thead>
         <tbody id="playersBody">
-          <tr class="empty-row"><td colspan="6">NO REGISTRATIONS YET — BE THE FIRST!</td></tr>
+          <tr class="empty-row"><td colspan="7">NO REGISTRATIONS YET - BE THE FIRST!</td></tr>
         </tbody>
       </table>
     </div>
 
     <div style="margin-top:1.5rem; text-align:center;">
-      <button class="btn-outline" onclick="backToList()">← Back to All Sports</button>
+      <button class="btn-outline" onclick="backToList()">Back to All Sports</button>
     </div>
   </div>
 </div>
@@ -142,45 +178,59 @@
       <a href="news.html">News</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+  <div class="footer-bottom">2025 UCSC Freshers' Sports. All rights reserved.</div>
 </footer>
 
 <script src="data.js"></script>
 <script src="main.js"></script>
 <script>
-  let currentSportId = null;
+  var currentSportId = null;
+  var currentGenderFilter = 'all';
 
-  // Build all-sports grid
-  const grid = document.getElementById('allSportsGrid');
-  SPORTS.forEach(s => {
-    const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
-    const div = document.createElement('a');
-    div.className = 'sport-card';
-    div.href = '#';
-    div.innerHTML = `
-      <span class="sport-icon">${s.icon}</span>
-      <div class="sport-name">${s.name}</div>
-      <div class="sport-count">${regs.length} registered</div>
-    `;
-    div.onclick = (e) => { e.preventDefault(); showSport(s.id); };
-    grid.appendChild(div);
-  });
+  function setGenderFilter(filter, btn) {
+    currentGenderFilter = filter;
+    var tabs = document.querySelectorAll('.gender-tab');
+    for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+    btn.classList.add('active');
+    renderPlayers(currentSportId);
+  }
 
-  // Check URL param
-  const params = new URLSearchParams(window.location.search);
-  const paramSport = params.get('sport');
-  if (paramSport) showSport(paramSport);
+  var grid = document.getElementById('allSportsGrid');
+  for (var si = 0; si < SPORTS.length; si++) {
+    (function(s) {
+      var regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
+      var div = document.createElement('a');
+      div.className = 'sport-card';
+      div.href = '#';
+      div.innerHTML =
+        '<span class="sport-icon">' + s.icon + '</span>' +
+        '<div class="sport-name">' + s.name + '</div>' +
+        '<div class="sport-count">' + regs.length + ' registered</div>';
+      div.onclick = function(e) { e.preventDefault(); showSport(s.id); };
+      grid.appendChild(div);
+    })(SPORTS[si]);
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var paramSport = params.get('sport');
+  if (paramSport) { showSport(paramSport); }
 
   function showSport(id) {
-    const sport = SPORTS.find(s => s.id === id);
+    var sport = null;
+    for (var i = 0; i < SPORTS.length; i++) { if (SPORTS[i].id === id) { sport = SPORTS[i]; break; } }
     if (!sport) return;
     currentSportId = id;
+    currentGenderFilter = 'all';
 
     document.getElementById('detailIcon').textContent = sport.icon;
     document.getElementById('detailName').textContent = sport.name;
     document.getElementById('detailDesc').textContent = sport.desc;
     document.getElementById('detailWhatsapp').href = sport.whatsapp;
     document.getElementById('formSportName').textContent = sport.name;
+
+    var tabs = document.querySelectorAll('.gender-tab');
+    for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+    tabs[0].classList.add('active');
 
     document.getElementById('sportsList').style.display = 'none';
     document.getElementById('sportDetail').style.display = 'block';
@@ -190,85 +240,120 @@
 
   function backToList() {
     currentSportId = null;
+    currentGenderFilter = 'all';
     document.getElementById('sportsList').style.display = 'block';
     document.getElementById('sportDetail').style.display = 'none';
-    // Refresh counts
-    document.querySelectorAll('#allSportsGrid .sport-count').forEach((el, i) => {
-      const regs = JSON.parse(localStorage.getItem('reg_' + SPORTS[i].id) || '[]');
-      el.textContent = regs.length + ' registered';
-    });
+    var counts = document.querySelectorAll('#allSportsGrid .sport-count');
+    for (var i = 0; i < counts.length; i++) {
+      var regs = JSON.parse(localStorage.getItem('reg_' + SPORTS[i].id) || '[]');
+      counts[i].textContent = regs.length + ' registered';
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function genderBadge(gender) {
+    if (gender === 'Male') {
+      return '<span style="color:#60a5fa;font-family:Barlow Condensed,sans-serif;letter-spacing:1px;font-size:0.85rem;">Male</span>';
+    }
+    if (gender === 'Female') {
+      return '<span style="color:#f472b6;font-family:Barlow Condensed,sans-serif;letter-spacing:1px;font-size:0.85rem;">Female</span>';
+    }
+    return '<span style="color:var(--text-muted);font-size:0.85rem;">' + (gender || '-') + '</span>';
+  }
+
   function renderPlayers(id) {
-    const regs = JSON.parse(localStorage.getItem('reg_' + id) || '[]');
-    const body = document.getElementById('playersBody');
-    document.getElementById('playerCount').textContent = regs.length;
+    var allRegs = JSON.parse(localStorage.getItem('reg_' + id) || '[]');
+    var regs = currentGenderFilter === 'all'
+      ? allRegs
+      : allRegs.filter(function(r) { return r.gender === currentGenderFilter; });
+
+    var body = document.getElementById('playersBody');
+    var countEl = document.getElementById('playerCount');
+    if (currentGenderFilter === 'all') {
+      countEl.textContent = allRegs.length;
+    } else {
+      countEl.textContent = regs.length + ' of ' + allRegs.length;
+    }
+
     if (regs.length === 0) {
-      body.innerHTML = '<tr class="empty-row"><td colspan="6">NO REGISTRATIONS YET — BE THE FIRST!</td></tr>';
+      var emptyMsg = currentGenderFilter === 'all'
+        ? 'NO REGISTRATIONS YET - BE THE FIRST!'
+        : 'NO ' + currentGenderFilter.toUpperCase() + ' PLAYERS REGISTERED YET.';
+      body.innerHTML = '<tr class="empty-row"><td colspan="7">' + emptyMsg + '</td></tr>';
       return;
     }
-    body.innerHTML = regs.map((r, i) => `
-      <tr>
-        <td style="color:var(--text-muted)">${i + 1}</td>
-        <td><strong>${r.name}</strong></td>
-        <td style="color:var(--primary);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">${r.studentId}</td>
-        <td style="color:var(--text-muted)">${r.year}</td>
-        <td style="color:var(--text-muted)">${r.dept || '—'}</td>
-        <td style="color:var(--text-muted)">${r.contact}</td>
-      </tr>
-    `).join('');
+
+    var html = '';
+    for (var i = 0; i < regs.length; i++) {
+      var r = regs[i];
+      html += '<tr>' +
+        '<td style="color:var(--text-muted)">' + (i + 1) + '</td>' +
+        '<td><strong>' + r.name + '</strong></td>' +
+        '<td style="color:var(--primary);font-family:Barlow Condensed,sans-serif;letter-spacing:1px">' + r.studentId + '</td>' +
+        '<td>' + genderBadge(r.gender) + '</td>' +
+        '<td style="color:var(--text-muted)">' + r.year + '</td>' +
+        '<td style="color:var(--text-muted)">' + (r.dept || '-') + '</td>' +
+        '<td style="color:var(--text-muted)">' + r.contact + '</td>' +
+        '</tr>';
+    }
+    body.innerHTML = html;
   }
 
   function registerPlayer() {
-    const name = document.getElementById('regName').value.trim();
-    const studentId = document.getElementById('regStudentId').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const contact = document.getElementById('regContact').value.trim();
-    const year = document.getElementById('regYear').value;
-    const dept = document.getElementById('regDept').value;
-    const msg = document.getElementById('formMessage');
+    var name = document.getElementById('regName').value.trim();
+    var studentId = document.getElementById('regStudentId').value.trim();
+    var email = document.getElementById('regEmail').value.trim();
+    var contact = document.getElementById('regContact').value.trim();
+    var year = document.getElementById('regYear').value;
+    var gender = document.getElementById('regGender').value;
+    var dept = document.getElementById('regDept').value;
+    var msg = document.getElementById('formMessage');
 
-    // Validation
-    if (!name || !studentId || !email || !contact || !year) {
+    if (!name || !studentId || !email || !contact || !year || !gender) {
       msg.className = 'form-message error';
-      msg.textContent = '⚠ Please fill in all required fields.';
+      msg.textContent = 'Please fill in all required fields including Gender.';
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       msg.className = 'form-message error';
-      msg.textContent = '⚠ Please enter a valid email address.';
+      msg.textContent = 'Please enter a valid email address.';
       return;
     }
-    if (!/^[0-9]{10}$/.test(contact.replace(/\s/g,''))) {
+    if (!/^[0-9]{10}$/.test(contact.replace(/\s/g, ''))) {
       msg.className = 'form-message error';
-      msg.textContent = '⚠ Please enter a valid 10-digit contact number.';
+      msg.textContent = 'Please enter a valid 10-digit contact number.';
       return;
     }
 
-    const key = 'reg_' + currentSportId;
-    const regs = JSON.parse(localStorage.getItem(key) || '[]');
+    var key = 'reg_' + currentSportId;
+    var regs = JSON.parse(localStorage.getItem(key) || '[]');
 
-    // Check duplicate
-    if (regs.find(r => r.studentId === studentId)) {
-      msg.className = 'form-message error';
-      msg.textContent = '⚠ This Student ID is already registered for this sport.';
-      return;
+    for (var i = 0; i < regs.length; i++) {
+      if (regs[i].studentId === studentId) {
+        msg.className = 'form-message error';
+        msg.textContent = 'This Student ID is already registered for this sport.';
+        return;
+      }
     }
 
-    regs.push({ name, studentId, email, contact, year, dept, registeredAt: new Date().toISOString() });
+    regs.push({ name: name, studentId: studentId, email: email, contact: contact, year: year, gender: gender, dept: dept, registeredAt: new Date().toISOString() });
     localStorage.setItem(key, JSON.stringify(regs));
 
-    // Clear form
-    ['regName','regStudentId','regEmail','regContact'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('regName').value = '';
+    document.getElementById('regStudentId').value = '';
+    document.getElementById('regEmail').value = '';
+    document.getElementById('regContact').value = '';
     document.getElementById('regYear').value = '';
+    document.getElementById('regGender').value = '';
     document.getElementById('regDept').value = '';
 
+    var sportName = '';
+    for (var j = 0; j < SPORTS.length; j++) { if (SPORTS[j].id === currentSportId) { sportName = SPORTS[j].name; break; } }
     msg.className = 'form-message success';
-    msg.textContent = `✓ Successfully registered ${name} for ${SPORTS.find(s=>s.id===currentSportId).name}!`;
+    msg.textContent = 'Successfully registered ' + name + ' for ' + sportName + '!';
 
     renderPlayers(currentSportId);
-    setTimeout(() => { msg.className = 'form-message'; msg.textContent = ''; }, 4000);
+    setTimeout(function() { msg.className = 'form-message'; msg.textContent = ''; }, 4000);
   }
 </script>
 </body>
