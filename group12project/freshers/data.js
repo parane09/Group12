@@ -58,16 +58,16 @@ const NEWS = [
 
 // ===== MATCHES / SCHEDULE =====
 const MATCHES = [
-  { sport: '🏏 Cricket', teamA: 'Batch 23', teamB: 'Batch 24', date: 'Aug 6', time: '9:00 AM', venue: 'Main Ground' },
-  { sport: '⚽ Football', teamA: 'CS Dept.', teamB: 'IT Dept.', date: 'Aug 6', time: '2:00 PM', venue: 'Football Field' },
-  { sport: '🏐 Volleyball', teamA: 'Year 1', teamB: 'Year 2', date: 'Aug 7', time: '10:00 AM', venue: 'Indoor Court' },
-  { sport: '🏸 Badminton', teamA: 'Group A', teamB: 'Group B', date: 'Aug 7', time: '1:00 PM', venue: 'Sports Hall' },
-  { sport: '🏀 Basketball', teamA: 'Team Alpha', teamB: 'Team Beta', date: 'Aug 8', time: '3:00 PM', venue: 'Basketball Court' },
-  { sport: '♟️ Chess', teamA: 'Qualifier Round', teamB: 'All Players', date: 'Aug 8', time: '9:00 AM', venue: 'Seminar Room A' },
-  { sport: '🏓 Table Tennis', teamA: 'Singles Round 1', teamB: 'All Players', date: 'Aug 9', time: '11:00 AM', venue: 'TT Hall' },
-  { sport: '🏉 Rugby', teamA: 'Batch 23', teamB: 'Batch 24', date: 'Aug 9', time: '4:00 PM', venue: 'Rugby Ground' },
-  { sport: '🏊 Swimming', teamA: 'Freestyle 100m', teamB: 'All Swimmers', date: 'Aug 10', time: '8:00 AM', venue: 'BMICH Pool' },
-  { sport: '🤼 Kabaddi', teamA: 'Group A', teamB: 'Group B', date: 'Aug 10', time: '2:00 PM', venue: 'Indoor Court' },
-  { sport: '🎮 E-Sports', teamA: 'FIFA Qualifiers', teamB: 'All Players', date: 'Aug 11', time: '10:00 AM', venue: 'Computer Lab 3' },
-  { sport: '🏃 Athletics', teamA: '100m Sprint', teamB: 'All Athletes', date: 'Aug 11', time: '7:00 AM', venue: 'Track Field' },
+  { sport: '🏏 Cricket', teamA: 'UCSC', teamB: 'Faculty of Science', date: 'Aug 6', time: '9:00 AM', venue: 'Main Ground' },
+  { sport: '⚽ Football', teamA: 'Faculty of Medicine', teamB: 'Faculty of Arts', date: 'Aug 6', time: '2:00 PM', venue: 'Football Field' },
+  { sport: '🏐 Volleyball', teamA: 'Faculty of Management', teamB: 'Faculty of Law', date: 'Aug 7', time: '10:00 AM', venue: 'Indoor Court' },
+  { sport: '🏸 Badminton', teamA: 'Faculty of Science', teamB: 'Faculty of Arts', date: 'Aug 7', time: '1:00 PM', venue: 'Sports Hall' },
+  { sport: '🏀 Basketball', teamA: 'Faculty of Management', teamB: 'Sri Palee Campus', date: 'Aug 8', time: '3:00 PM', venue: 'Basketball Court' },
+  { sport: '♟️ Chess', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', date: 'Aug 8', time: '9:00 AM', venue: 'Seminar Room A' },
+  { sport: '🏓 Table Tennis', teamA: 'Faculty of Law', teamB: 'Faculty of Technology', date: 'Aug 9', time: '11:00 AM', venue: 'TT Hall' },
+  { sport: '🏉 Rugby', teamA: 'UCSC', teamB: 'Faculty of Science', date: 'Aug 9', time: '4:00 PM', venue: 'Rugby Ground' },
+  { sport: '🏊 Swimming', teamA: 'Faculty of Medicine', teamB: 'Faculty of Management', date: 'Aug 10', time: '8:00 AM', venue: 'BMICH Pool' },
+  { sport: '🤼 Kabaddi', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', date: 'Aug 10', time: '2:00 PM', venue: 'Indoor Court' },
+  { sport: '🎮 E-Sports', teamA: 'UCSC', teamB: 'Faculty of Science', date: 'Aug 11', time: '10:00 AM', venue: 'Computer Lab 3' },
+  { sport: '🏃 Athletics', teamA: 'Faculty of Arts', teamB: 'Sri Palee Campus', date: 'Aug 11', time: '7:00 AM', venue: 'Track Field' },
 ];

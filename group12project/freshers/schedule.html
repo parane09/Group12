@@ -3,16 +3,71 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Schedule — Freshers' 2025 UCSC</title>
+  <title>Schedule — Freshers' Championship 2026 UCSC</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    .schedule-filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex: 1;
+    }
+    .sport-filter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .sport-filter-wrap label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .sport-filter-select {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .sport-filter-select:focus,
+    .sport-filter-select:hover {
+      border-color: var(--primary);
+    }
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+  </style>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="nav-logo">
     <span class="logo-tag">UCSC</span>
-    <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
+    <span class="logo-title">FRESHERS <em>CHAMPIONSHIP</em> 2026</span>
   </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
@@ -25,14 +80,22 @@
 </nav>
 
 <div class="page-header">
-  <span class="section-tag">AUGUST 2025</span>
+  <span class="section-tag">AUGUST 2026</span>
   <h1>Event Schedule</h1>
-  <p>Full match schedule and event timetable for Freshers' Sports 2025.</p>
+  <p>Full match schedule and event timetable for Freshers' Championship 2026.</p>
 </div>
 
 <div class="section">
 
-  <div class="filter-tabs" id="dayTabs"></div>
+  <div class="schedule-filters">
+    <div class="filter-tabs" id="dayTabs"></div>
+    <div class="sport-filter-wrap">
+      <label>Sport:</label>
+      <select class="sport-filter-select" id="sportFilter" onchange="renderSchedule()">
+        <option value="all">All Sports</option>
+      </select>
+    </div>
+  </div>
 
   <div id="scheduleContent"></div>
 
@@ -42,7 +105,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <span class="logo-tag">UCSC</span>
-      <p>Freshers' Sports 2025<br/>University of Colombo School of Computing</p>
+      <p>Freshers Championship 2026<br/>University of Colombo School of Computing</p>
     </div>
     <div class="footer-links">
       <a href="index.html">Home</a>
@@ -52,54 +115,68 @@
       <a href="news.html">News</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+  <div class="footer-bottom">© 2026 UCSC Freshers Championship. All rights reserved.</div>
 </footer>
 
 <script src="data.js"></script>
 <script src="main.js"></script>
 <script>
-  // Extended schedule with more matches per day
   const FULL_SCHEDULE = [
     // Day 1 — Aug 5
     { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🎉 Opening Ceremony', teamA: 'All Athletes', teamB: 'UCSC Faculty', time: '8:30 AM', venue: 'Main Grounds', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏃 Athletics', teamA: '100m Sprint — Heat 1', teamB: 'All Runners', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏊 Swimming', teamA: 'Freestyle 50m', teamB: 'All Swimmers', time: '1:00 PM', venue: 'BMICH Pool', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '♟️ Chess', teamA: 'Round 1', teamB: 'All Players', time: '9:00 AM', venue: 'Seminar Room A', status: 'upcoming' },
-    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🎯 Carrom', teamA: 'Group Stage', teamB: 'All Players', time: '2:00 PM', venue: 'Common Room', status: 'upcoming' },
+    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏃 Athletics', teamA: 'UCSC', teamB: 'Faculty of Science', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
+    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🏊 Swimming', teamA: 'Faculty of Medicine', teamB: 'Faculty of Management', time: '1:00 PM', venue: 'BMICH Pool', status: 'upcoming' },
+    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '♟️ Chess', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', time: '9:00 AM', venue: 'Seminar Room A', status: 'upcoming' },
+    { day: 'Aug 5', dayLabel: 'Day 1 — Opening', sport: '🎯 Carrom', teamA: 'Sri Palee Campus', teamB: 'Faculty of Technology', time: '2:00 PM', venue: 'Common Room', status: 'upcoming' },
+
     // Day 2 — Aug 6
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏏 Cricket', teamA: 'Batch 23', teamB: 'Batch 24', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '⚽ Football', teamA: 'CS Dept.', teamB: 'IT Dept.', time: '2:00 PM', venue: 'Football Field', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏐 Volleyball', teamA: 'Year 1', teamB: 'Year 2', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🥅 Netball', teamA: 'Group A', teamB: 'Group B', time: '11:30 AM', venue: 'Netball Court', status: 'upcoming' },
-    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🤾 Handball', teamA: 'Heat 1', teamB: 'All Teams', time: '3:30 PM', venue: 'Sports Hall', status: 'upcoming' },
+    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏏 Cricket', teamA: 'UCSC', teamB: 'Faculty of Science', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
+    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '⚽ Football', teamA: 'Faculty of Medicine', teamB: 'Faculty of Arts', time: '2:00 PM', venue: 'Football Field', status: 'upcoming' },
+    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🏐 Volleyball', teamA: 'Faculty of Management', teamB: 'Faculty of Law', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
+    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🥅 Netball', teamA: 'Sri Palee Campus', teamB: 'Faculty of Technology', time: '11:30 AM', venue: 'Netball Court', status: 'upcoming' },
+    { day: 'Aug 6', dayLabel: 'Day 2 — Team Sports', sport: '🤾 Handball', teamA: 'UCSC', teamB: 'Faculty of Management', time: '3:30 PM', venue: 'Sports Hall', status: 'upcoming' },
+
     // Day 3 — Aug 7
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏸 Badminton', teamA: 'Singles R1', teamB: 'Group A', time: '9:00 AM', venue: 'Sports Hall', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏓 Table Tennis', teamA: 'Singles Round 1', teamB: 'All Players', time: '11:00 AM', venue: 'TT Hall', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🎾 Tennis', teamA: 'Group A', teamB: 'Group B', time: '2:00 PM', venue: 'Tennis Courts', status: 'upcoming' },
-    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏀 Basketball', teamA: 'Team Alpha', teamB: 'Team Beta', time: '4:00 PM', venue: 'Basketball Court', status: 'upcoming' },
+    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏸 Badminton', teamA: 'Faculty of Science', teamB: 'Faculty of Arts', time: '9:00 AM', venue: 'Sports Hall', status: 'upcoming' },
+    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏓 Table Tennis', teamA: 'Faculty of Law', teamB: 'Faculty of Technology', time: '11:00 AM', venue: 'TT Hall', status: 'upcoming' },
+    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🎾 Tennis', teamA: 'UCSC', teamB: 'Faculty of Medicine', time: '2:00 PM', venue: 'Tennis Courts', status: 'upcoming' },
+    { day: 'Aug 7', dayLabel: 'Day 3 — Racket Sports', sport: '🏀 Basketball', teamA: 'Faculty of Management', teamB: 'Sri Palee Campus', time: '4:00 PM', venue: 'Basketball Court', status: 'upcoming' },
+
     // Day 4 — Aug 8
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🏉 Rugby', teamA: 'Batch 23', teamB: 'Batch 24', time: '9:00 AM', venue: 'Rugby Ground', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🤼 Kabaddi', teamA: 'Group A', teamB: 'Group B', time: '11:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '💪 Tug of War', teamA: 'CS vs IT', teamB: 'IS vs Stats', time: '2:00 PM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🥇 Shot Put', teamA: 'Men\'s Final', teamB: 'Women\'s Final', time: '4:00 PM', venue: 'Track Field', status: 'upcoming' },
+    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🏉 Rugby', teamA: 'UCSC', teamB: 'Faculty of Science', time: '9:00 AM', venue: 'Rugby Ground', status: 'upcoming' },
+    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🤼 Kabaddi', teamA: 'Faculty of Arts', teamB: 'Faculty of Law', time: '11:00 AM', venue: 'Indoor Court', status: 'upcoming' },
+    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '💪 Tug of War', teamA: 'Faculty of Medicine', teamB: 'Faculty of Technology', time: '2:00 PM', venue: 'Main Ground', status: 'upcoming' },
+    { day: 'Aug 8', dayLabel: 'Day 4 — Contact Sports', sport: '🥇 Shot Put', teamA: 'Faculty of Management', teamB: 'Sri Palee Campus', time: '4:00 PM', venue: 'Track Field', status: 'upcoming' },
+
     // Day 5 — Aug 9
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏏 Cricket', teamA: 'Semi-Final', teamB: 'Top Teams', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏃 Athletics', teamA: '200m Final', teamB: 'Top Athletes', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🚴 Cycling', teamA: 'Road Race', teamB: 'All Cyclists', time: '7:00 AM', venue: 'Campus Road', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏅 Long Distance', teamA: '5km Race', teamB: 'All Runners', time: '6:30 AM', venue: 'Campus Track', status: 'upcoming' },
-    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🎮 E-Sports', teamA: 'FIFA Final', teamB: 'Top 2 Players', time: '2:00 PM', venue: 'Computer Lab 3', status: 'upcoming' },
+    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏏 Cricket', teamA: 'UCSC', teamB: 'Faculty of Medicine', time: '9:00 AM', venue: 'Main Ground', status: 'upcoming' },
+    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏃 Athletics', teamA: 'Faculty of Arts', teamB: 'Sri Palee Campus', time: '10:00 AM', venue: 'Track Field', status: 'upcoming' },
+    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🚴 Cycling', teamA: 'Faculty of Science', teamB: 'Faculty of Technology', time: '7:00 AM', venue: 'Campus Road', status: 'upcoming' },
+    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🏅 Long Distance', teamA: 'Faculty of Management', teamB: 'Faculty of Law', time: '6:30 AM', venue: 'Campus Track', status: 'upcoming' },
+    { day: 'Aug 9', dayLabel: 'Day 5 — Finals Day 1', sport: '🎮 E-Sports', teamA: 'UCSC', teamB: 'Faculty of Science', time: '2:00 PM', venue: 'Computer Lab 3', status: 'upcoming' },
+
     // Day 6 — Aug 10 — Grand Finals
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '⚽ Football', teamA: 'GRAND FINAL', teamB: 'Top 2 Teams', time: '3:00 PM', venue: 'Football Field', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏐 Volleyball', teamA: 'GRAND FINAL', teamB: 'Top 2 Teams', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏸 Badminton', teamA: 'GRAND FINAL', teamB: 'Top 2 Players', time: '1:00 PM', venue: 'Sports Hall', status: 'upcoming' },
-    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🎉 Closing Ceremony', teamA: 'Prize Giving', teamB: 'All Athletes', time: '6:00 PM', venue: 'Main Grounds', status: 'upcoming' },
+    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '⚽ Football', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '3:00 PM', venue: 'Football Field', status: 'upcoming' },
+    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏐 Volleyball', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '10:00 AM', venue: 'Indoor Court', status: 'upcoming' },
+    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🏸 Badminton', teamA: 'GRAND FINAL', teamB: 'Top 2 Faculties', time: '1:00 PM', venue: 'Sports Hall', status: 'upcoming' },
+    { day: 'Aug 10', dayLabel: 'Day 6 — Grand Finals', sport: '🎉 Closing Ceremony', teamA: 'Prize Giving', teamB: 'All Faculties', time: '6:00 PM', venue: 'Main Grounds', status: 'upcoming' },
   ];
 
-  // Get unique days
+  // Get unique days and sports
   const days = [...new Set(FULL_SCHEDULE.map(m => m.day))];
+  const sports = [...new Set(FULL_SCHEDULE.map(m => m.sport))].sort();
   let activeDay = days[0];
 
-  // Render tabs
+  // Populate sport filter dropdown
+  const sportSelect = document.getElementById('sportFilter');
+  sports.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    sportSelect.appendChild(opt);
+  });
+
+  // Render day tabs
   const tabsContainer = document.getElementById('dayTabs');
   days.forEach(day => {
     const btn = document.createElement('button');
@@ -115,8 +192,23 @@
   });
 
   function renderSchedule() {
-    const matches = FULL_SCHEDULE.filter(m => m.day === activeDay);
-    const dayLabel = matches[0]?.dayLabel || activeDay;
+    const selectedSport = document.getElementById('sportFilter').value;
+    let matches = FULL_SCHEDULE.filter(m => m.day === activeDay);
+    if (selectedSport !== 'all') {
+      matches = matches.filter(m => m.sport === selectedSport);
+    }
+
+    const dayLabel = FULL_SCHEDULE.find(m => m.day === activeDay)?.dayLabel || activeDay;
+
+    if (matches.length === 0) {
+      document.getElementById('scheduleContent').innerHTML = `
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--primary)">${dayLabel}</h2>
+        </div>
+        <div class="no-results">No matches found for the selected sport on this day.</div>
+      `;
+      return;
+    }
 
     document.getElementById('scheduleContent').innerHTML = `
       <div style="margin-bottom:1.5rem;">
