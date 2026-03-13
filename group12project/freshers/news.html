@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News — Freshers' 2025 UCSC</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-tag">UCSC</span>
+    <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sports.html">Sports</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="coaches.html">Coaches</a></li>
+    <li><a href="news.html" class="active">News</a></li>
+  </ul>
+  <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<div class="page-header">
+  <span class="section-tag">LATEST UPDATES</span>
+  <h1>News & Announcements</h1>
+  <p>Stay up to date with all the latest news, notices, and highlights from Freshers' Sports 2025.</p>
+</div>
+
+<div class="section">
+
+  <!-- Featured / Latest -->
+  <div style="margin-bottom:1rem;">
+    <span class="section-tag" style="text-align:left">FEATURED</span>
+  </div>
+  <div id="featuredNews" style="margin-bottom:3rem;"></div>
+
+  <div style="margin-bottom:1rem;">
+    <span class="section-tag" style="text-align:left">ALL UPDATES</span>
+  </div>
+
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" onclick="filterNews('all', this)">All</button>
+    <button class="filter-tab" onclick="filterNews('ANNOUNCEMENT', this)">Announcements</button>
+    <button class="filter-tab" onclick="filterNews('UPDATE', this)">Updates</button>
+    <button class="filter-tab" onclick="filterNews('NOTICE', this)">Notices</button>
+    <button class="filter-tab" onclick="filterNews('EVENT', this)">Events</button>
+    <button class="filter-tab" onclick="filterNews('HIGHLIGHT', this)">Highlights</button>
+  </div>
+
+  <div class="news-grid" id="newsGrid"></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-tag">UCSC</span>
+      <p>Freshers' Sports 2025<br/>University of Colombo School of Computing</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="sports.html">Sports</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="coaches.html">Coaches</a>
+      <a href="news.html">News</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="main.js"></script>
+<script>
+  // Featured = latest news item shown large
+  const featured = NEWS[0];
+  document.getElementById('featuredNews').innerHTML = `
+    <div style="
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      border-left: 4px solid var(--primary);
+      position:relative;
+      overflow:hidden;
+    ">
+      <div style="
+        position:absolute;top:0;right:0;bottom:0;width:40%;
+        background: radial-gradient(ellipse at right, rgba(255,107,0,0.08) 0%, transparent 70%);
+      "></div>
+      <span class="news-tag">${featured.tag}</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);margin:0.75rem 0;line-height:1.1;">${featured.title}</h2>
+      <p style="color:var(--text-muted);font-size:1rem;line-height:1.8;max-width:640px;margin-bottom:1rem;">${featured.excerpt}</p>
+      <span class="news-date">${featured.date}</span>
+    </div>
+  `;
+
+  function renderNews(filter) {
+    const list = filter === 'all' ? NEWS : NEWS.filter(n => n.tag === filter);
+    document.getElementById('newsGrid').innerHTML = list.map(n => `
+      <div class="news-card">
+        <span class="news-tag">${n.tag}</span>
+        <h3>${n.title}</h3>
+        <p>${n.excerpt}</p>
+        <span class="news-date">${n.date}</span>
+      </div>
+    `).join('');
+  }
+
+  function filterNews(filter, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderNews(filter);
+  }
+
+  renderNews('all');
+</script>
+</body>
+</html>

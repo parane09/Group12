@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coaches — Freshers' 2025 UCSC</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-tag">UCSC</span>
+    <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sports.html">Sports</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="coaches.html" class="active">Coaches</a></li>
+    <li><a href="news.html">News</a></li>
+  </ul>
+  <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<div class="page-header">
+  <span class="section-tag">20 COACHES</span>
+  <h1>Our Coaches</h1>
+  <p>Meet the experienced trainers and coaches guiding our athletes at Freshers' 2025.</p>
+</div>
+
+<div class="section">
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" onclick="filterCoaches('all', this)">All Coaches</button>
+  </div>
+  <div class="coaches-grid" id="coachesGrid"></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-tag">UCSC</span>
+      <p>Freshers' Sports 2025<br/>University of Colombo School of Computing</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="sports.html">Sports</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="coaches.html">Coaches</a>
+      <a href="news.html">News</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="main.js"></script>
+<script>
+  function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  }
+
+  function renderCoaches(filter) {
+    const grid = document.getElementById('coachesGrid');
+    const list = filter === 'all' ? COACHES : COACHES.filter(c => c.sport === filter);
+    grid.innerHTML = list.map(c => `
+      <div class="coach-card">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+          <div class="coach-avatar">${getInitials(c.name)}</div>
+          <div>
+            <span class="coach-sport-tag">${c.sport}</span>
+            <div class="coach-name">${c.name}</div>
+            <div class="coach-title">${c.title}</div>
+          </div>
+        </div>
+        <p class="coach-bio">${c.bio}</p>
+        <div class="coach-contact">✉ ${c.contact}</div>
+      </div>
+    `).join('');
+  }
+
+  // Build sport filter tabs
+  const tabs = document.getElementById('filterTabs');
+  COACHES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab';
+    btn.textContent = c.sport;
+    btn.onclick = function() { filterCoaches(c.sport, this); };
+    tabs.appendChild(btn);
+  });
+
+  function filterCoaches(filter, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderCoaches(filter);
+  }
+
+  renderCoaches('all');
+</script>
+</body>
+</html>

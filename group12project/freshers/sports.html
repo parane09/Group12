@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sports — Freshers' 2025 UCSC</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-tag">UCSC</span>
+    <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sports.html" class="active">Sports</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="coaches.html">Coaches</a></li>
+    <li><a href="news.html">News</a></li>
+  </ul>
+  <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<div class="page-header">
+  <span class="section-tag">20 EVENTS</span>
+  <h1>All Sports</h1>
+  <p>Select a sport to register, view registered players, and join the WhatsApp group.</p>
+</div>
+
+<!-- SPORT DETAIL PANEL (shown when sport selected) -->
+<div id="sportDetail" style="display:none;">
+  <div class="sport-detail-hero">
+    <span class="sport-detail-icon" id="detailIcon"></span>
+    <h1 id="detailName"></h1>
+    <p id="detailDesc"></p>
+    <a id="detailWhatsapp" href="#" target="_blank" class="whatsapp-btn">
+      💬 Join WhatsApp Group
+    </a>
+  </div>
+
+  <div class="section">
+    <!-- Registration Form -->
+    <div class="reg-form-container">
+      <h3>Register for <span id="formSportName"></span></h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="regName" placeholder="e.g. Kasun Perera"/>
+        </div>
+        <div class="form-group">
+          <label>Student ID *</label>
+          <input type="text" id="regStudentId" placeholder="e.g. CS/2024/001"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="regEmail" placeholder="e.g. kasun@student.cmb.ac.lk"/>
+        </div>
+        <div class="form-group">
+          <label>Contact Number *</label>
+          <input type="tel" id="regContact" placeholder="e.g. 0771234567"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Year / Batch *</label>
+          <select id="regYear">
+            <option value="">Select Batch</option>
+            <option>1st Year — Batch 2024/25</option>
+            <option>2nd Year — Batch 2023/24</option>
+            <option>3rd Year — Batch 2022/23</option>
+            <option>4th Year — Batch 2021/22</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <select id="regDept">
+            <option value="">Select Department</option>
+            <option>Computer Science</option>
+            <option>Information Technology</option>
+            <option>Information Systems</option>
+            <option>Statistics & OR</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="registerPlayer()">Register Now</button>
+        <div id="formMessage" class="form-message"></div>
+      </div>
+    </div>
+
+    <!-- Registered Players -->
+    <div class="players-table-wrap">
+      <div class="players-table-header">
+        Registered Players — <span id="playerCount">0</span> registered
+      </div>
+      <table class="players-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Student ID</th>
+            <th>Year / Batch</th>
+            <th>Department</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody id="playersBody">
+          <tr class="empty-row"><td colspan="6">NO REGISTRATIONS YET — BE THE FIRST!</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:1.5rem; text-align:center;">
+      <button class="btn-outline" onclick="backToList()">← Back to All Sports</button>
+    </div>
+  </div>
+</div>
+
+<!-- SPORTS LIST -->
+<div id="sportsList">
+  <div class="section">
+    <div class="sports-grid" id="allSportsGrid"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-tag">UCSC</span>
+      <p>Freshers' Sports 2025<br/>University of Colombo School of Computing</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="sports.html">Sports</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="coaches.html">Coaches</a>
+      <a href="news.html">News</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="main.js"></script>
+<script>
+  let currentSportId = null;
+
+  // Build all-sports grid
+  const grid = document.getElementById('allSportsGrid');
+  SPORTS.forEach(s => {
+    const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
+    const div = document.createElement('a');
+    div.className = 'sport-card';
+    div.href = '#';
+    div.innerHTML = `
+      <span class="sport-icon">${s.icon}</span>
+      <div class="sport-name">${s.name}</div>
+      <div class="sport-count">${regs.length} registered</div>
+    `;
+    div.onclick = (e) => { e.preventDefault(); showSport(s.id); };
+    grid.appendChild(div);
+  });
+
+  // Check URL param
+  const params = new URLSearchParams(window.location.search);
+  const paramSport = params.get('sport');
+  if (paramSport) showSport(paramSport);
+
+  function showSport(id) {
+    const sport = SPORTS.find(s => s.id === id);
+    if (!sport) return;
+    currentSportId = id;
+
+    document.getElementById('detailIcon').textContent = sport.icon;
+    document.getElementById('detailName').textContent = sport.name;
+    document.getElementById('detailDesc').textContent = sport.desc;
+    document.getElementById('detailWhatsapp').href = sport.whatsapp;
+    document.getElementById('formSportName').textContent = sport.name;
+
+    document.getElementById('sportsList').style.display = 'none';
+    document.getElementById('sportDetail').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    renderPlayers(id);
+  }
+
+  function backToList() {
+    currentSportId = null;
+    document.getElementById('sportsList').style.display = 'block';
+    document.getElementById('sportDetail').style.display = 'none';
+    // Refresh counts
+    document.querySelectorAll('#allSportsGrid .sport-count').forEach((el, i) => {
+      const regs = JSON.parse(localStorage.getItem('reg_' + SPORTS[i].id) || '[]');
+      el.textContent = regs.length + ' registered';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderPlayers(id) {
+    const regs = JSON.parse(localStorage.getItem('reg_' + id) || '[]');
+    const body = document.getElementById('playersBody');
+    document.getElementById('playerCount').textContent = regs.length;
+    if (regs.length === 0) {
+      body.innerHTML = '<tr class="empty-row"><td colspan="6">NO REGISTRATIONS YET — BE THE FIRST!</td></tr>';
+      return;
+    }
+    body.innerHTML = regs.map((r, i) => `
+      <tr>
+        <td style="color:var(--text-muted)">${i + 1}</td>
+        <td><strong>${r.name}</strong></td>
+        <td style="color:var(--primary);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">${r.studentId}</td>
+        <td style="color:var(--text-muted)">${r.year}</td>
+        <td style="color:var(--text-muted)">${r.dept || '—'}</td>
+        <td style="color:var(--text-muted)">${r.contact}</td>
+      </tr>
+    `).join('');
+  }
+
+  function registerPlayer() {
+    const name = document.getElementById('regName').value.trim();
+    const studentId = document.getElementById('regStudentId').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const contact = document.getElementById('regContact').value.trim();
+    const year = document.getElementById('regYear').value;
+    const dept = document.getElementById('regDept').value;
+    const msg = document.getElementById('formMessage');
+
+    // Validation
+    if (!name || !studentId || !email || !contact || !year) {
+      msg.className = 'form-message error';
+      msg.textContent = '⚠ Please fill in all required fields.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.className = 'form-message error';
+      msg.textContent = '⚠ Please enter a valid email address.';
+      return;
+    }
+    if (!/^[0-9]{10}$/.test(contact.replace(/\s/g,''))) {
+      msg.className = 'form-message error';
+      msg.textContent = '⚠ Please enter a valid 10-digit contact number.';
+      return;
+    }
+
+    const key = 'reg_' + currentSportId;
+    const regs = JSON.parse(localStorage.getItem(key) || '[]');
+
+    // Check duplicate
+    if (regs.find(r => r.studentId === studentId)) {
+      msg.className = 'form-message error';
+      msg.textContent = '⚠ This Student ID is already registered for this sport.';
+      return;
+    }
+
+    regs.push({ name, studentId, email, contact, year, dept, registeredAt: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(regs));
+
+    // Clear form
+    ['regName','regStudentId','regEmail','regContact'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('regYear').value = '';
+    document.getElementById('regDept').value = '';
+
+    msg.className = 'form-message success';
+    msg.textContent = `✓ Successfully registered ${name} for ${SPORTS.find(s=>s.id===currentSportId).name}!`;
+
+    renderPlayers(currentSportId);
+    setTimeout(() => { msg.className = 'form-message'; msg.textContent = ''; }, 4000);
+  }
+</script>
+</body>
+</html>

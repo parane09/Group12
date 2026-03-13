@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freshers' Sports 2025 — UCSC</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-tag">UCSC</span>
+    <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="sports.html">Sports</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="coaches.html">Coaches</a></li>
+    <li><a href="news.html">News</a></li>
+  </ul>
+  <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">University of Colombo School of Computing</div>
+    <h1 class="hero-title">FRESHERS'<br/><span class="accent">SPORTS</span><br/>2025</h1>
+    <p class="hero-sub">Compete. Connect. Conquer.<br/>Register now for 20 exciting sports events.</p>
+    <div class="hero-cta">
+      <a href="sports.html" class="btn-primary">Register Now</a>
+      <a href="schedule.html" class="btn-outline">View Schedule</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">SCROLL DOWN ↓</div>
+</section>
+
+<!-- STATS -->
+<section class="stats-bar">
+  <div class="stat"><span class="stat-num">20</span><span class="stat-label">Sports</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-num" id="totalPlayers">0</span><span class="stat-label">Registered</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-num">1</span><span class="stat-label">Campus</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Glory</span></div>
+</section>
+
+<!-- SPORTS GRID PREVIEW -->
+<section class="section sports-preview">
+  <div class="section-header">
+    <span class="section-tag">COMPETE</span>
+    <h2>Pick Your Sport</h2>
+    <p>Choose from 20 exciting sports and represent your batch</p>
+  </div>
+  <div class="sports-grid" id="sportsGrid"></div>
+  <div class="center-btn"><a href="sports.html" class="btn-primary">View All Sports & Register</a></div>
+</section>
+
+<!-- NEWS PREVIEW -->
+<section class="section news-preview dark-section">
+  <div class="section-header">
+    <span class="section-tag">LATEST</span>
+    <h2>News & Updates</h2>
+  </div>
+  <div class="news-grid" id="newsGrid"></div>
+  <div class="center-btn"><a href="news.html" class="btn-outline-light">All Updates</a></div>
+</section>
+
+<!-- UPCOMING MATCHES -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-tag">UPCOMING</span>
+    <h2>Next Matches</h2>
+  </div>
+  <div class="matches-list" id="matchesList"></div>
+  <div class="center-btn"><a href="schedule.html" class="btn-primary">Full Schedule</a></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-tag">UCSC</span>
+      <p>Freshers' Sports 2025<br/>University of Colombo School of Computing</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="sports.html">Sports</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="coaches.html">Coaches</a>
+      <a href="news.html">News</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 UCSC Freshers' Sports. All rights reserved.</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="main.js"></script>
+<script>
+  // Count total registrations
+  let total = 0;
+  SPORTS.forEach(s => {
+    const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
+    total += regs.length;
+  });
+  document.getElementById('totalPlayers').textContent = total;
+
+  // Sports grid preview (first 8)
+  const grid = document.getElementById('sportsGrid');
+  SPORTS.slice(0, 8).forEach(s => {
+    const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
+    grid.innerHTML += `
+      <a href="sports.html?sport=${s.id}" class="sport-card">
+        <div class="sport-icon">${s.icon}</div>
+        <div class="sport-name">${s.name}</div>
+        <div class="sport-count">${regs.length} registered</div>
+      </a>`;
+  });
+
+  // News preview
+  const ng = document.getElementById('newsGrid');
+  NEWS.slice(0, 3).forEach(n => {
+    ng.innerHTML += `
+      <div class="news-card">
+        <span class="news-tag">${n.tag}</span>
+        <h3>${n.title}</h3>
+        <p>${n.excerpt}</p>
+        <span class="news-date">${n.date}</span>
+      </div>`;
+  });
+
+  // Matches preview
+  const ml = document.getElementById('matchesList');
+  MATCHES.slice(0, 4).forEach(m => {
+    ml.innerHTML += `
+      <div class="match-row">
+        <span class="match-sport">${m.sport}</span>
+        <div class="match-teams"><strong>${m.teamA}</strong> <span class="vs">VS</span> <strong>${m.teamB}</strong></div>
+        <span class="match-time">${m.date} · ${m.time}</span>
+        <span class="match-venue">${m.venue}</span>
+      </div>`;
+  });
+</script>
+</body>
+</html>
