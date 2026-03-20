@@ -1,0 +1,22 @@
+{% load static %}
+<nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-tag">UCSC</span>
+      <span class="logo-title">FRESHERS' 2026 <em>CHAMPIONSHIP</em></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+      <li><a href="{% url 'sports' %}" class="{% if request.resolver_match.url_name == 'sports' %}active{% endif %}">Sports</a></li>
+      <li><a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Schedule</a></li>
+      <li><a href="{% url 'coaches' %}" class="{% if request.resolver_match.url_name == 'coaches' %}active{% endif %}">Coaches</a></li>
+      <li><a href="{% url 'news' %}" class="{% if request.resolver_match.url_name == 'news' %}active{% endif %}">News</a></li>
+      {% if request.user.profile.user_type == 'COACH' %}
+        <li><a href="{% url 'coach_dashboard' %}">Dashboard</a></li>
+      {% elif request.user.profile.user_type == 'ADMIN' %}
+        <li><a href="{% url 'admin_dashboard' %}">Admin</a></li>
+      {% endif %}
+      <li><span class="nav-user">{{ request.user.username }}</span></li>
+      <li><a href="{% url 'logout' %}" style="color: #ef4444;">Logout</a></li>
+    </ul>
+    <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
+</nav>

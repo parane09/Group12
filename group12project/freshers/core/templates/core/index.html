@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,29 +6,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Freshers Championship 2026 — UCSC</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'core/css/style.css' %}" />
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap"
     rel="stylesheet" />
+  <style>
+    .nav-user {
+        color: #ff6b00;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 700;
+        margin-right: 1rem;
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- NAV -->
-  <nav class="navbar">
-    <div class="nav-logo">
-      <span class="logo-tag">UCSC</span>
-      <span class="logo-title">FRESHERS <em>CHAMPIONSHIP</em> 2026</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="sports.html">Sports</a></li>
-      <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="coaches.html">Coaches</a></li>
-      <li><a href="news.html">News</a></li>
-    </ul>
-    <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
-  </nav>
+  {% include 'core/navbar.html' %}
 
   <!-- HERO -->
   <section class="hero">
@@ -38,8 +34,8 @@
       <h1 class="hero-title">FRESHERS'<br /><span class="accent">CHAMPIONSHIP</span><br />2026</h1>
       <p class="hero-sub">Compete. Connect. Conquer.<br />Register now for 20 exciting sports events.</p>
       <div class="hero-cta">
-        <a href="sports.html" class="btn-primary">Register Now</a>
-        <a href="schedule.html" class="btn-outline">View Schedule</a>
+        <a href="{% url 'sports' %}" class="btn-primary">Register Now</a>
+        <a href="{% url 'schedule' %}" class="btn-outline">View Schedule</a>
       </div>
     </div>
     <div class="hero-scroll-hint">SCROLL DOWN ↓</div>
@@ -64,7 +60,7 @@
       <p>Choose from 20 exciting sports and represent your batch</p>
     </div>
     <div class="sports-grid" id="sportsGrid"></div>
-    <div class="center-btn"><a href="sports.html" class="btn-primary">View All Sports & Register</a></div>
+    <div class="center-btn"><a href="{% url 'sports' %}" class="btn-primary">View All Sports & Register</a></div>
   </section>
 
   <!-- NEWS PREVIEW -->
@@ -74,7 +70,7 @@
       <h2>News & Updates</h2>
     </div>
     <div class="news-grid" id="newsGrid"></div>
-    <div class="center-btn"><a href="news.html" class="btn-outline-light">All Updates</a></div>
+    <div class="center-btn"><a href="{% url 'news' %}" class="btn-outline-light">All Updates</a></div>
   </section>
 
   <!-- UPCOMING MATCHES -->
@@ -84,7 +80,7 @@
       <h2>Next Matches</h2>
     </div>
     <div class="matches-list" id="matchesList"></div>
-    <div class="center-btn"><a href="schedule.html" class="btn-primary">Full Schedule</a></div>
+    <div class="center-btn"><a href="{% url 'schedule' %}" class="btn-primary">Full Schedule</a></div>
   </section>
 
   <!-- FOOTER -->
@@ -95,37 +91,36 @@
         <p>Freshers Championship 2026<br />University of Colombo School of Computing</p>
       </div>
       <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="sports.html">Sports</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="coaches.html">Coaches</a>
-        <a href="news.html">News</a>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'sports' %}">Sports</a>
+        <a href="{% url 'schedule' %}">Schedule</a>
+        <a href="{% url 'coaches' %}">Coaches</a>
+        <a href="{% url 'news' %}">News</a>
       </div>
     </div>
     <div class="footer-bottom">© 2026 UCSC Freshers Championship. All rights reserved.</div>
   </footer>
 
-  <script src="data.js"></script>
-  <script src="main.js"></script>
+  <script src="{% static 'core/js/data.js' %}"></script>
+  <script src="{% static 'core/js/main.js' %}"></script>
   <script>
-    // Count total registrations
-    let total = 0;
-    SPORTS.forEach(s => {
-      const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
-      total += regs.length;
-    });
-    document.getElementById('totalPlayers').textContent = total;
-
-    // Sports grid preview (first 8)
-    const grid = document.getElementById('sportsGrid');
-    SPORTS.slice(0, 8).forEach(s => {
-      const regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
-      grid.innerHTML += `
-      <a href="sports.html?sport=${s.id}" class="sport-card">
-        <div class="sport-icon">${s.icon}</div>
-        <div class="sport-name">${s.name}</div>
-        <div class="sport-count">${regs.length} registered</div>
-      </a>`;
+    // Fetch stats from DB
+    fetch('/api/stats/')
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('totalPlayers').textContent = data.total;
+        
+        // Sports grid preview (first 8)
+        const grid = document.getElementById('sportsGrid');
+        SPORTS.slice(0, 8).forEach(s => {
+          const count = data.by_sport[s.id] || 0;
+          grid.innerHTML += `
+          <a href="{% url 'sports' %}?sport=${s.id}" class="sport-card">
+            <div class="sport-icon">${s.icon}</div>
+            <div class="sport-name">${s.name}</div>
+            <div class="sport-count">${count} registered</div>
+          </a>`;
+        });
     });
 
     // News preview

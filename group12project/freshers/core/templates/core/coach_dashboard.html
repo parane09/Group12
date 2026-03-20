@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Dashboard — Freshers Championship 2026</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'core/navbar.html' %}
+
+    <div class="page-header">
+        <span class="section-tag">{{ sport }}</span>
+        <h1>Welcome, Coach</h1>
+        <p>Viewing all registered students for <strong>{{ sport }}</strong>.</p>
+    </div>
+
+    <div class="section">
+        <div class="players-table-wrap">
+            <div class="players-table-header">
+                <span>Registrations ({{ registrations.count }})</span>
+            </div>
+            <table class="players-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Student ID</th>
+                        <th>Gender</th>
+                        <th>Degree / Dept</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr>
+                        <td style="color:var(--text-muted)">{{ forloop.counter }}</td>
+                        <td><strong>{{ reg.full_name }}</strong></td>
+                        <td style="color:var(--primary); font-family:'Barlow Condensed', sans-serif;">{{ reg.student_id }}</td>
+                        <td>{{ reg.gender }}</td>
+                        <td style="color:var(--text-muted)">{{ reg.department }}</td>
+                        <td style="color:var(--text-muted)">{{ reg.email }}</td>
+                        <td style="color:var(--text-muted)">{{ reg.contact }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr class="empty-row">
+                        <td colspan="7">No students registered for this sport yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-bottom">© 2026 UCSC Freshers Championship. Coach Panel.</div>
+    </footer>
+</body>
+</html>

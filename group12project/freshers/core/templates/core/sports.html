@@ -1,11 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sports — Freshers' 2025 UCSC</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Sports — Freshers' 2026 UCSC</title>
+  <link rel="stylesheet" href="{% static 'core/css/style.css' %}" />
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap"
     rel="stylesheet" />
@@ -42,25 +43,19 @@
     .gender-tab.girls.active {
       background: linear-gradient(135deg, #ec4899, #be185d);
     }
+
+    .nav-user {
+        color: #ff6b00;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 700;
+        margin-right: 1rem;
+    }
   </style>
 </head>
 
 <body>
 
-  <nav class="navbar">
-    <div class="nav-logo">
-      <span class="logo-tag">UCSC</span>
-      <span class="logo-title">FRESHERS' <em>SPORTS</em> 2025</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="sports.html" class="active">Sports</a></li>
-      <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="coaches.html">Coaches</a></li>
-      <li><a href="news.html">News</a></li>
-    </ul>
-    <div class="nav-toggle" onclick="toggleMenu()">&#9776;</div>
-  </nav>
+  {% include 'core/navbar.html' %}
 
   <div class="page-header">
     <span class="section-tag">20 EVENTS</span>
@@ -153,7 +148,7 @@
           </thead>
           <tbody id="playersBody">
             <tr class="empty-row">
-              <td colspan="6">NO REGISTRATIONS YET - BE THE FIRST!</td>
+              <td colspan="6">LOADING REGISTRATIONS...</td>
             </tr>
           </tbody>
         </table>
@@ -176,21 +171,21 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <span class="logo-tag">UCSC</span>
-        <p>Freshers' Sports 2025<br />University of Colombo School of Computing</p>
+        <p>Freshers' Sports 2026<br />University of Colombo School of Computing</p>
       </div>
       <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="sports.html">Sports</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="coaches.html">Coaches</a>
-        <a href="news.html">News</a>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'sports' %}">Sports</a>
+        <a href="{% url 'schedule' %}">Schedule</a>
+        <a href="{% url 'coaches' %}">Coaches</a>
+        <a href="{% url 'news' %}">News</a>
       </div>
     </div>
-    <div class="footer-bottom">2025 UCSC Freshers' Sports. All rights reserved.</div>
+    <div class="footer-bottom">2026 UCSC Freshers' Sports. All rights reserved.</div>
   </footer>
 
-  <script src="data.js"></script>
-  <script src="main.js"></script>
+  <script src="{% static 'core/js/data.js' %}"></script>
+  <script src="{% static 'core/js/main.js' %}"></script>
   <script>
     var currentSportId = null;
     var currentGenderFilter = 'all';
@@ -204,20 +199,30 @@
     }
 
     var grid = document.getElementById('allSportsGrid');
-    for (var si = 0; si < SPORTS.length; si++) {
-      (function (s) {
-        var regs = JSON.parse(localStorage.getItem('reg_' + s.id) || '[]');
+    SPORTS.forEach(s => {
         var div = document.createElement('a');
         div.className = 'sport-card';
         div.href = '#';
+        div.id = 'card-' + s.id;
         div.innerHTML =
           '<span class="sport-icon">' + s.icon + '</span>' +
           '<div class="sport-name">' + s.name + '</div>' +
-          '<div class="sport-count">' + regs.length + ' registered</div>';
+          '<div class="sport-count" id="count-' + s.id + '">0 registered</div>';
         div.onclick = function (e) { e.preventDefault(); showSport(s.id); };
         grid.appendChild(div);
-      })(SPORTS[si]);
+    });
+
+    function updateAllCounts() {
+        fetch('/api/stats/')
+        .then(r => r.json())
+        .then(data => {
+            SPORTS.forEach(s => {
+                const countEl = document.getElementById('count-' + s.id);
+                if(countEl) countEl.textContent = (data.by_sport[s.id] || 0) + ' registered';
+            });
+        });
     }
+    updateAllCounts();
 
     var params = new URLSearchParams(window.location.search);
     var paramSport = params.get('sport');
@@ -251,11 +256,7 @@
       currentGenderFilter = 'all';
       document.getElementById('sportsList').style.display = 'block';
       document.getElementById('sportDetail').style.display = 'none';
-      var counts = document.querySelectorAll('#allSportsGrid .sport-count');
-      for (var i = 0; i < counts.length; i++) {
-        var regs = JSON.parse(localStorage.getItem('reg_' + SPORTS[i].id) || '[]');
-        counts[i].textContent = regs.length + ' registered';
-      }
+      updateAllCounts();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -270,40 +271,43 @@
     }
 
     function renderPlayers(id) {
-      var allRegs = JSON.parse(localStorage.getItem('reg_' + id) || '[]');
-      var regs = currentGenderFilter === 'all'
-        ? allRegs
-        : allRegs.filter(function (r) { return r.gender === currentGenderFilter; });
+      fetch(`/api/registrations/${id}/`)
+      .then(r => r.json())
+      .then(allRegs => {
+        var regs = currentGenderFilter === 'all'
+          ? allRegs
+          : allRegs.filter(function (r) { return r.gender === currentGenderFilter; });
 
-      var body = document.getElementById('playersBody');
-      var countEl = document.getElementById('playerCount');
-      if (currentGenderFilter === 'all') {
-        countEl.textContent = allRegs.length;
-      } else {
-        countEl.textContent = regs.length + ' of ' + allRegs.length;
-      }
+        var body = document.getElementById('playersBody');
+        var countEl = document.getElementById('playerCount');
+        if (currentGenderFilter === 'all') {
+          countEl.textContent = allRegs.length;
+        } else {
+          countEl.textContent = regs.length + ' of ' + allRegs.length;
+        }
 
-      if (regs.length === 0) {
-        var emptyMsg = currentGenderFilter === 'all'
-          ? 'NO REGISTRATIONS YET - BE THE FIRST!'
-          : 'NO ' + currentGenderFilter.toUpperCase() + ' PLAYERS REGISTERED YET.';
-        body.innerHTML = '<tr class="empty-row"><td colspan="6">' + emptyMsg + '</td></tr>';
-        return;
-      }
+        if (regs.length === 0) {
+          var emptyMsg = currentGenderFilter === 'all'
+            ? 'NO REGISTRATIONS YET - BE THE FIRST!'
+            : 'NO ' + currentGenderFilter.toUpperCase() + ' PLAYERS REGISTERED YET.';
+          body.innerHTML = '<tr class="empty-row"><td colspan="6">' + emptyMsg + '</td></tr>';
+          return;
+        }
 
-      var html = '';
-      for (var i = 0; i < regs.length; i++) {
-        var r = regs[i];
-        html += '<tr>' +
-          '<td style="color:var(--text-muted)">' + (i + 1) + '</td>' +
-          '<td><strong>' + r.name + '</strong></td>' +
-          '<td style="color:var(--primary);font-family:Barlow Condensed,sans-serif;letter-spacing:1px">' + r.studentId + '</td>' +
-          '<td>' + genderBadge(r.gender) + '</td>' +
-          '<td style="color:var(--text-muted)">' + (r.dept || '-') + '</td>' +
-          '<td style="color:var(--text-muted)">' + r.contact + '</td>' +
-          '</tr>';
-      }
-      body.innerHTML = html;
+        var html = '';
+        for (var i = 0; i < regs.length; i++) {
+          var r = regs[i];
+          html += '<tr>' +
+            '<td style="color:var(--text-muted)">' + (i + 1) + '</td>' +
+            '<td><strong>' + r.full_name + '</strong></td>' +
+            '<td style="color:var(--primary);font-family:Barlow Condensed,sans-serif;letter-spacing:1px">' + r.student_id + '</td>' +
+            '<td>' + genderBadge(r.gender) + '</td>' +
+            '<td style="color:var(--text-muted)">' + (r.department || '-') + '</td>' +
+            '<td style="color:var(--text-muted)">' + r.contact + '</td>' +
+            '</tr>';
+        }
+        body.innerHTML = html;
+      });
     }
 
     function registerPlayer() {
@@ -320,45 +324,46 @@
         msg.textContent = 'Please fill in all required fields including Gender.';
         return;
       }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msg.className = 'form-message error';
-        msg.textContent = 'Please enter a valid email address.';
-        return;
-      }
-      if (!/^[0-9]{10}$/.test(contact.replace(/\s/g, ''))) {
-        msg.className = 'form-message error';
-        msg.textContent = 'Please enter a valid 10-digit contact number.';
-        return;
-      }
-
-      var key = 'reg_' + currentSportId;
-      var regs = JSON.parse(localStorage.getItem(key) || '[]');
-
-      for (var i = 0; i < regs.length; i++) {
-        if (regs[i].studentId === studentId) {
-          msg.className = 'form-message error';
-          msg.textContent = 'This Student ID is already registered for this sport.';
-          return;
-        }
-      }
-
-      regs.push({ name: name, studentId: studentId, email: email, contact: contact, gender: gender, dept: dept, registeredAt: new Date().toISOString() });
-      localStorage.setItem(key, JSON.stringify(regs));
-
-      document.getElementById('regName').value = '';
-      document.getElementById('regStudentId').value = '';
-      document.getElementById('regEmail').value = '';
-      document.getElementById('regContact').value = '';
-      document.getElementById('regGender').value = '';
-      document.getElementById('regDept').value = '';
 
       var sportName = '';
       for (var j = 0; j < SPORTS.length; j++) { if (SPORTS[j].id === currentSportId) { sportName = SPORTS[j].name; break; } }
-      msg.className = 'form-message success';
-      msg.textContent = 'Successfully registered ' + name + ' for ' + sportName + '!';
 
-      renderPlayers(currentSportId);
-      setTimeout(function () { msg.className = 'form-message'; msg.textContent = ''; }, 4000);
+      fetch('/api/register/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({
+              sport_id: currentSportId,
+              sport_name: sportName,
+              full_name: name,
+              student_id: studentId,
+              email: email,
+              contact: contact,
+              gender: gender,
+              department: dept
+          })
+      })
+      .then(r => r.json())
+      .then(data => {
+          if(data.status === 'success') {
+            document.getElementById('regName').value = '';
+            document.getElementById('regStudentId').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regContact').value = '';
+            document.getElementById('regGender').value = '';
+            document.getElementById('regDept').value = '';
+
+            msg.className = 'form-message success';
+            msg.textContent = 'Successfully registered ' + name + ' for ' + sportName + '!';
+            renderPlayers(currentSportId);
+            setTimeout(function () { msg.className = 'form-message'; msg.textContent = ''; }, 4000);
+          } else {
+            msg.className = 'form-message error';
+            msg.textContent = data.message || 'Registration failed.';
+          }
+      });
     }
   </script>
 </body>
